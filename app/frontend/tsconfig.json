@@ -1,16 +1,28 @@
 {
   "compilerOptions": {
-      "outDir": "./dist/",
-      "sourceMap": true,
-      "strict": true,
-      "forceConsistentCasingInFileNames": true,
-      "noUnusedLocals": true,
-      "noUnusedParameters": true,
-      "module": "es6",
-      "jsx": "react",
-      "target": "es5",
-      "typeRoots" : ["./typings", "node_modules/@types"],
-      "moduleResolution": "node"  // required by Three.js
+    "alwaysStrict": true,
+    "sourceMap": true,
+    "declaration": true,
+    "declarationDir": "lib",
+    "target": "es5",
+    "removeComments": true,
+    "noImplicitReturns": true,
+    "noImplicitAny": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "strictNullChecks": true,
+    "stripInternal": true,
+    "noFallthroughCasesInSwitch": true,
+    "outDir": "lib",
+    "noEmitOnError": true,
+    "jsx":"react",
+    "types": [
+      "node",
+      "google-protobuf"
+    ]
   },
-  "include": ["src", "test"]
+  "include": ["src", "test", "genproto/farm_ng_proto/tractor/v1"],
+  "exclude": [
+    "node_modules"
+  ]
 }

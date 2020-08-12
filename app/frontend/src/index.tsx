@@ -1,23 +1,21 @@
-// The following hack is a work around for this issue:
-// https://github.com/stephenh/ts-proto/issues/108
-import * as protobuf from "protobufjs/minimal";
-import * as Long from "long";
-protobuf.util.Long = Long;
-protobuf.configure();
-
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-
-import { Event } from "../genproto/farm_ng_proto/tractor/v1/io";
+import * as jspb from "google-protobuf";
+import io_pb = require("../genproto/farm_ng_proto/tractor/v1/io_pb.js");
+import Event = io_pb.Event;
+console.info("event", io_pb, event);
+export const MyEvent = Event;
 
 export type State = {
-  readonly data: Event;
+  readonly data: Object;
 };
 
 class App extends React.Component<{}, State> {
   constructor(props: any) {
     super(props);
-    this.state = { data: Event.fromJSON({}) };
+    console.info(jspb);
+
+    this.state = { data: new Object() };
   }
 
   public componentDidMount() {
@@ -25,13 +23,12 @@ class App extends React.Component<{}, State> {
     ws.binaryType = "arraybuffer";
 
     ws.onmessage = (ev: MessageEvent) => {
-      const pbEvent = Event.decode(new Uint8Array(ev.data));
-      this.setState({ data: pbEvent });
+      const pbEvent = MyEvent.deserializeBinary(new Uint8Array(ev.data));
+      this.setState({ data: pbEvent.toObject() });
     };
   }
-
   public render() {
-    return <div>{JSON.stringify(Event.toJSON(this.state.data))} </div>;
+    return <div>{JSON.stringify(this.state.data)} </div>;
   }
 }
 

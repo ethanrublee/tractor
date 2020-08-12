@@ -5,8 +5,8 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 CMD="protoc"
 CMD_ARGS="--proto_path=protos
           --python_out=python/genproto
-          --ts_proto_out=app/frontend/genproto
-          --ts_proto_opt=forceLong=long
+          --js_out=import_style=commonjs,binary:app/frontend/genproto
+          --ts_out=app/frontend/genproto
           --twirp_tornado_srv_out=python/gensrv
           protos/farm_ng_proto/tractor/v1/*.proto
           protos/validate/validate.proto"
