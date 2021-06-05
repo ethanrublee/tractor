@@ -102,6 +102,7 @@ jobs:
           author_email: devel_build@noreply
           message: 'Update ${{ matrix.image }} digest: farmng/build-${{ matrix.image }}@${{ steps.docker_build.outputs.digest }}'
           add: docker/devel/${{ matrix.image }}-digest.txt
+          pull_strategy: NO-PULL
 
   devel_build:
     needs: third_party_build
