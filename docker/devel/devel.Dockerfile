@@ -1,12 +1,15 @@
 ARG base_image=ubuntu:18.04
 
+ARG cli11_tag=farmng/build-cli11:latest
+ARG libfmt_tag=farmng/build-libfmt:latest
 ARG apriltag_tag=farmng/build-apriltag:latest
 ARG ceres_tag=farmng/build-ceres:latest
 ARG grpc_tag=farmng/build-grpc:latest
 ARG opencv_tag=farmng/build-opencv:latest
 ARG sophus_tag=farmng/build-sophus:latest
 
-
+FROM $libfmt_tag AS libfmt
+FROM $cli11_tag AS cli11
 FROM $apriltag_tag AS apriltag
 FROM $ceres_tag AS ceres
 FROM $grpc_tag AS grpc
@@ -127,6 +130,8 @@ RUN BIN="/usr/local/bin" && \
 	   chmod +x "${BIN}/${BINARY_NAME}"
 
 # [docs] copy_third_party
+COPY --from=libfmt $PREFIX $PREFIX
+COPY --from=cli11 $PREFIX $PREFIX
 COPY --from=apriltag $PREFIX $PREFIX
 COPY --from=ceres $PREFIX $PREFIX
 COPY --from=grpc $PREFIX $PREFIX

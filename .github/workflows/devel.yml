@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        image: ["apriltag", "opencv", "grpc", "ceres", "sophus"]
+        image: ["libfmt", "cli11", "apriltag", "opencv", "grpc", "ceres", "sophus"]
     # [docs] third_party
     steps:
       - name: Checkout
@@ -162,6 +162,8 @@ jobs:
         if: steps.docker_file_hash.outputs.cache-hit != 'true'
         id: vars
         run: |
+          echo ::set-output name=cli11::$(cat docker/devel/cli11-digest.txt)
+          echo ::set-output name=libfmt::$(cat docker/devel/libfmt-digest.txt)
           echo ::set-output name=apriltag::$(cat docker/devel/apriltag-digest.txt)
           echo ::set-output name=ceres::$(cat docker/devel/ceres-digest.txt)
           echo ::set-output name=grpc::$(cat docker/devel/grpc-digest.txt)
@@ -176,6 +178,8 @@ jobs:
           context: ./docker/devel
           file: ./docker/devel/devel.Dockerfile
           build-args: |
+            libfmt_tag=farmng/build-libfmt@${{steps.vars.outputs.libfmt}}
+            cli11_tag=farmng/build-cli11@${{steps.vars.outputs.cli11}}
             apriltag_tag=farmng/build-apriltag@${{steps.vars.outputs.apriltag}}
             ceres_tag=farmng/build-ceres@${{steps.vars.outputs.ceres}}
             grpc_tag=farmng/build-grpc@${{steps.vars.outputs.grpc}}
